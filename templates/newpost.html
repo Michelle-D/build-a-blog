@@ -4,23 +4,18 @@
 
 <form method="post">
     <label>
-        <div>Subject</div>
-        <input type="text" name="subject" value="{{ subject }}">
+        <div>Title</div>
+        <input type="text" name="title" value="{{ title }}">
     </label>
     <label>
-        <div>Content</div>
-        <textarea name="content" value="{{ content }}"></textarea>
+        <div>blog</div>
+        <textarea name="blog" value="{{ blog }}"></textarea>
     </label>
     <div class="error">{{ error }}</div>
     </div>
         <input type="submit">
 </form>
 
-<hr>
-    {% for art in arts %}
-        <div class ="content">
-        <div class ="content-subject">{{content.subject}}
-        <pre class ="content-body">{{content.content}}</pre>
-    {% endfor %}
+
 
 {% endblock %}

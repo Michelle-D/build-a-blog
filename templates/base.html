@@ -1,44 +1,47 @@
 <!DOCTYPE html>
+
 <html>
     <head>
-        <title>Blog Time</title>
-        <style type="text/css">
-            body {
-                font-family: sans-serif;
-                width: 800px;
-                margin: 0 auto;
-                padding: 10px;
-                }
 
-            .error {
-                color: red
-                }
-
-            label {
-                display: block;
-                font-size 20px;
-                }
-            input[type=text] {
-                font-size: 24px;
-                }
-            hr {
-                margin: 20px auto;
-                }
-
-            .art + .art {
-                margin: 0;
-                }
-
-            .art-body{
-                margin: 0;
-                font-size: 12px;
-                }
-        </style>
+        <title>build-a-blog</title>
     </head>
+    <style type="text/css">
+        body {
+            font-family: sans-serif;
+            width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+            }
 
+        .error {
+            color: red
+            }
+
+        label {
+            display: block;
+            font-size 20.px;
+            }
+
+        input[type=text] {
+            font-size: 24px;
+            }
+        hr {
+            margin: 20ox auto;
+            }
+
+        .blog + .blog {
+            margin: 0;
+            }
+
+        .blog-body{
+            margin: 0;
+            font-size: 12px;
+            }
+    </style>
     <body>
-        <h1> Let's Blog! </h1>
-            {% block content %}
-            {% endblock %}
+        <h1>Blog</h1>
+        {% block content %}
+
+        {% endblock %}
     </body>
-</html>
+  </html>

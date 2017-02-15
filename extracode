@@ -1,44 +1,25 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Blog Time</title>
-        <style type="text/css">
-            body {
-                font-family: sans-serif;
-                width: 800px;
-                margin: 0 auto;
-                padding: 10px;
-                }
+class ViewPost(Handler):
+    def render_front(self, title="", entry="", error="", entries=""):
+        #Having LIMIT 5 here makes no difference, but the variable 'entries' is required.
+#        entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC")
+        self.render("viewpost.html", error = error, id = id)
+    def get(self, id):
+        #pass
+        #self.response.write(id)
+        int_id = int(id)
+        single_entry = Entry.get_by_id(int_id)
+        self.render_front()
 
-            .error {
-                color: red
-                }
+viewpost.html
+        {% extends "base.html" %}
+        {% block content %}
+        <div class="section">
+          <div class = "entry">
+            <div class = "entry-title">{{entry.key().id()}}</div>
+            <div class = "entry-ID">{{entry.id}}</div>
+            <pre class = "entry-body">{{entry.entry}}</pre>
+          </div>
+        </div>
+        {% endblock %}
 
-            label {
-                display: block;
-                font-size 20px;
-                }
-            input[type=text] {
-                font-size: 24px;
-                }
-            hr {
-                margin: 20px auto;
-                }
-
-            .art + .art {
-                margin: 0;
-                }
-
-            .art-body{
-                margin: 0;
-                font-size: 12px;
-                }
-        </style>
-    </head>
-
-    <body>
-        <h1> Let's Blog! </h1>
-            {% block content %}
-            {% endblock %}
-    </body>
-</html>
+self.render("viewpost.html", title = entry.title, entry = entry.entry)

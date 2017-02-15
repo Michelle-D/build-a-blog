@@ -19,10 +19,17 @@ class Handler(webapp2.RequestHandler):
     def render (self, template, **kw):
         self.write(self.render_str(template, **kw))
 
+def blog_key(name = 'default'):
+    return db.Key.from_path('blogs', name)
+
 class Blog(db.Model):  #creates an intity
     title = db.StringProperty(required = True)
     blog = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
+
+    def render(self):
+        self._render_text = self.blog.replace('/n', '<br>')
+        return render_str("blog.html", p = self)
 
 class NewPost(Handler):
     def render_front(self, title="", blog="", error=""):
@@ -55,8 +62,8 @@ class MainPage(Handler):
 
 class ViewPost(webapp2.RequestHandler):
     def get(self, id):
-        pass
-
+        page = self.request.get('page')
+        self.response.write('I have {0} page is {1}'.format(id, page))
 
 app = webapp2.WSGIApplication([('/', MainPage),
                                 ("/newpost", NewPost),

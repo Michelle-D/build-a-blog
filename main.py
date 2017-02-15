@@ -24,7 +24,7 @@ class Blog(db.Model):  #creates an intity
     blog = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
 
-class MainPage(Handler):
+class NewPost(Handler):
     def render_front(self, title="", blog="", error=""):
         blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC LIMIT 5")
         self.render("newpost.html", title=title, blog=blog, error=error, blogs=blogs)
@@ -36,7 +36,7 @@ class MainPage(Handler):
         title = self.request.get("title")
         blog = self.request.get("blog")
 
-        if title and art:
+        if title and blog:
             b = Blog(title = title, blog = blog) #creates new instence of blog
             b.put() #stores new blog object in database
 
@@ -45,11 +45,19 @@ class MainPage(Handler):
             error = "we need both a title and a blog"
             self.render_front(title, blog, error)
 
+class MainPage(Handler):
+    def render_front(self, title="", blog="", error=""):
+        blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC LIMIT 5")
+        self.render("blog.html",title=title, blog=blog, error=error, blogs=blogs)
+
+    def get(self):
+        self.render_front()
+
 class ViewPost(webapp2.RequestHandler):
     def get(self, id):
         pass
 
 
 app = webapp2.WSGIApplication([('/', MainPage),
-                                #("/newpost", NewPost),
+                                ("/newpost", NewPost),
                                 webapp2.Route('/blog/<id:\d+>', ViewPost)], debug =True)

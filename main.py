@@ -29,7 +29,7 @@ class Blog(db.Model):  #creates an intity
 
     def render(self):
         self._render_text = self.blog.replace('/n', '<br>')
-        return render_str("blog.html", p = self)
+        return render_str("base.html", p = self)
 
 class NewPost(Handler):
     def render_front(self, title="", blog="", error=""):
@@ -44,10 +44,10 @@ class NewPost(Handler):
         blog = self.request.get("blog")
 
         if title and blog:
-            b = Blog(title = title, blog = blog) #creates new instence of blog
-            b.put() #stores new blog object in database
+            a = Blog(title = title, blog = blog) #creates new instence of blog
+            a.put() #stores new blog object in database
+            self.redirect("/blog/%s" % str(a.key().id()))
 
-            self.redirect("/")
         else:
             error = "we need both a title and a blog"
             self.render_front(title, blog, error)
@@ -60,10 +60,14 @@ class MainPage(Handler):
     def get(self):
         self.render_front()
 
-class ViewPost(webapp2.RequestHandler):
+class ViewPost(Handler):
     def get(self, id):
-        page = self.request.get('page')
-        self.response.write('I have {0} page is {1}'.format(id, page))
+        post = Blog.get_by_id( int(id) )
+        if post:
+            self.render("viewpost.html", title = post.title, blog = post.blog)
+        else:
+            error= "That blog does not exist."
+            self.render("viewpost.html", error = error)
 
 app = webapp2.WSGIApplication([('/', MainPage),
                                 ("/newpost", NewPost),

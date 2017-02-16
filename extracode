@@ -23,3 +23,39 @@ viewpost.html
         {% endblock %}
 
 self.render("viewpost.html", title = entry.title, entry = entry.entry)
+
+
+class ViewPost(Handler):
+	int_id = Entry.get_by_id( int(id) )
+    def get(self, id):
+        single_entry = Entry.get_by_id(int_id)
+        self.render("viewpost.html", title = entry.title, entry.entry = entry, error = error)
+
+
+        class ViewPost(Handler):
+        	int_id = Entry.get_by_id( int(id) )
+            def get(self, id):
+                self.render("viewpost.html", title = entry.title, entry.entry = entry, error = error)
+
+
+app = webapp2.WSGIApplication([('/', MainPage), ('/blog', Blog), ('/newpost', NewPost), webapp2.Route('/blog/<id:\d+>', ViewPost)], debug=True)
+
+class NewPost(Handler):
+
+    def render_newpost (self, title="", words="", error=""):
+        self.render("newpost.html", title=title, words=words, error=error)
+
+    def get (self):
+        self.render_newpost()
+
+    def post (self):
+        title = self.request.get("title")
+        words = self.request.get("words")
+
+        if title and words:
+            a = Post(title = title, words = words)
+            a.put()
+            self.redirect("/blog/%s" % str(a.key().id()))
+        else:
+            error = "we need both a title and some text"
+            self.render_newpost(title, words, error)

@@ -1,0 +1,11 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="section">
+  <div class = "blog">
+    <div class = "blog-title">{{blog.key().id()}}</div>
+    <div class = "blog-ID">{{blog.id}}</div>
+    <pre class = "blog-body">{{blog.entry}}</pre>
+  </div>
+</div>
+{% endblock %}

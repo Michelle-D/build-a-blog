@@ -38,10 +38,36 @@
             font-size: 12px;
             }
     </style>
-    <body>
-        <h1>Blog</h1>
-        {% block content %}
 
-        {% endblock %}
+    <div class="page-wrapper">
+      <h5 class="nav"><a href ="/">Go back</a></h5>
+
+      <h5 class="nav"><a href= "/newpost">Add a new post</a></h5>
+    {% block content %}
+
+    <body>
+
+      <h1>Recent Blog Posts</h1>
+
+
+    {% for post in posts %}
+    <div class ="post">
+     <h3 class ="post-title">
+       <a href="/blog/{{ post.key().id() }}">{{post.title}}</a></h3>
+     <p class ="post-body">{{post.words}}</p>
+     <br>
+     <br>
+       {% endfor %}
+    </div>
+
+
+
+
+  </div>
+
+    {% endblock %}
+
+
+
     </body>
-  </html>
+    </html>

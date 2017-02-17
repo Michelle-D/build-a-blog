@@ -11,16 +11,25 @@ class ViewPost(Handler):
         self.render_front()
 
 viewpost.html
-        {% extends "base.html" %}
-        {% block content %}
-        <div class="section">
-          <div class = "entry">
-            <div class = "entry-title">{{entry.key().id()}}</div>
-            <div class = "entry-ID">{{entry.id}}</div>
-            <pre class = "entry-body">{{entry.entry}}</pre>
-          </div>
-        </div>
-        {% endblock %}
+{% extends "base.html" %}
+{% block content %}
+{% if error %}
+
+    {{error}}
+
+{% else %}
+<br>
+<br>
+<div class="post">
+    <div class="post-title">
+        {{ title }}
+    </div>
+
+    <hr>
+    <div name="post-body">{{ blog }}</div>
+</div>
+{% endif %}
+{% endblock %}
 
 self.render("viewpost.html", title = entry.title, entry = entry.entry)
 
@@ -40,22 +49,10 @@ class ViewPost(Handler):
 
 app = webapp2.WSGIApplication([('/', MainPage), ('/blog', Blog), ('/newpost', NewPost), webapp2.Route('/blog/<id:\d+>', ViewPost)], debug=True)
 
-class NewPost(Handler):
+<body>
+    <h1>Blog</h1>
+    {% block content %}
 
-    def render_newpost (self, title="", words="", error=""):
-        self.render("newpost.html", title=title, words=words, error=error)
-
-    def get (self):
-        self.render_newpost()
-
-    def post (self):
-        title = self.request.get("title")
-        words = self.request.get("words")
-
-        if title and words:
-            a = Post(title = title, words = words)
-            a.put()
-            self.redirect("/blog/%s" % str(a.key().id()))
-        else:
-            error = "we need both a title and some text"
-            self.render_newpost(title, words, error)
+    {% endblock %}
+</body>
+</html>

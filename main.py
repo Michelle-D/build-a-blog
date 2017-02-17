@@ -19,8 +19,8 @@ class Handler(webapp2.RequestHandler):
     def render (self, template, **kw):
         self.write(self.render_str(template, **kw))
 
-def blog_key(name = 'default'):
-    return db.Key.from_path('blogs', name)
+#def blog_key(name = 'default'):
+#    return db.Key.from_path('blogs', name)
 
 class Blog(db.Model):  #creates an intity
     title = db.StringProperty(required = True)
@@ -44,9 +44,9 @@ class NewPost(Handler):
         blog = self.request.get("blog")
 
         if title and blog:
-            a = Blog(title = title, blog = blog) #creates new instence of blog
+            a = Blog(title = title, blog = blog) #creates new instance of blog
             a.put() #stores new blog object in database
-            self.redirect("/blog/%s" % str(a.key().id()))
+            self.redirect("/base/%s" % str(a.key().id()))
 
         else:
             error = "we need both a title and a blog"
@@ -55,20 +55,20 @@ class NewPost(Handler):
 class MainPage(Handler):
     def render_front(self, title="", blog="", error=""):
         blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC LIMIT 5")
-        self.render("blog.html",title=title, blog=blog, error=error, blogs=blogs)
+        self.render("base.html",title=title, blog=blog, error=error, blogs=blogs)
 
     def get(self):
         self.render_front()
 
 class ViewPost(Handler):
     def get(self, id):
-        post = Blog.get_by_id( int(id) )
-        if post:
-            self.render("viewpost.html", title = post.title, blog = post.blog)
+        blog = Blog.get_by_id( int(id) )
+        if blog:
+            self.render("viewpost.html", title = blog.title, blog = blog.blog)
         else:
             error= "That blog does not exist."
             self.render("viewpost.html", error = error)
 
 app = webapp2.WSGIApplication([('/', MainPage),
                                 ("/newpost", NewPost),
-                                webapp2.Route('/blog/<id:\d+>', ViewPost)], debug =True)
+                                webapp2.Route('/base/<id:\d+>', ViewPost)], debug =True)
